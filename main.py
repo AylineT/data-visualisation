@@ -7,7 +7,7 @@ import pandas as pd
 app = FastAPI()
 
 # Count of songs per year
-df = pd.read_csv("csv/spotify-data.csv")
+df = pd.read_csv("csv/spotify_tracks.csv")
 
 # Add CORS middleware for development
 app.add_middleware(
@@ -23,7 +23,7 @@ app.add_middleware(
 ############################################
 
 @app.get("/")
-async def get_spotify_data():
+def get_spotify_data():
     return df.to_dict(orient="records")
 
 # Count of songs per year
@@ -119,7 +119,6 @@ def top_10_party_tracks():
 # @app.get("/10danceableSongs")
 # def danceableSongs():
 #     top10 = df[['name', 'artists', 'danceability', 'year']].sort_values(by='danceability', ascending=False).head(10).to_dict(orient='records')
-    
 #     return {"top10": top10}
 
 # Top 10 songs with the highest duration
