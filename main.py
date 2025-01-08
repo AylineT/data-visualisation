@@ -34,11 +34,11 @@ def read_root():
 
     return {"message": "Bienvenue sur FastAPI !", "songsByYear": countByYear}
 
-# Name and artists with parameter year
+# List of tracks and artists by year
 @app.get("/year/{year}")
 def songs_by_year(year: int):
     filtered = df[df['year'] == year]
-    songs = filtered[['name', 'artists']].to_dict(orient='records')
+    songs = filtered[['track_name', 'artist_name']].to_dict(orient='records')
 
     return {"year": year, "songs": songs}
 
@@ -55,7 +55,7 @@ def song_per_artist(year: int):
 def acousticness():
     average = df.groupby('year')['acousticness'].mean().sort_values(ascending=False).to_dict()
 
-    return {"average_acousticness": average}
+    return {"results": average}
 
 # Danceability per year
 @app.get("/danceability-per-year")
@@ -112,8 +112,8 @@ def danceability_vs_valence():
 @app.get("/top-10-party-tracks")
 def top_10_party_tracks():
     party_tracks = df[(df['danceability'] > 0.8) & (df['energy'] > 0.7) & (df['loudness'] > -5)]
-    top_party = party_tracks.nlargest(10, 'popularity')[['name', 'artists', 'danceability', 'energy', 'popularity']].to_dict(orient='records')
-    return {"top_10_party_tracks": top_party}
+    top_party = party_tracks.nlargest(10, 'popularity')[['track_name', 'artist_name', 'danceability', 'energy', 'popularity', 'year', 'artwork_url', 'album_name']].to_dict(orient='records')
+    return {"results": top_party}
 
 # Top 10 songs with most danceability
 # @app.get("/10danceableSongs")
@@ -124,20 +124,20 @@ def top_10_party_tracks():
 # Top 10 songs with the highest duration
 @app.get("/top-10-longest-tracks")
 def top_10_longest_tracks():
-    longest_tracks = df.nlargest(10, 'duration_ms')[['name', 'artists', 'duration_ms']].to_dict(orient='records')
+    longest_tracks = df.nlargest(10, 'duration_ms')[['track_name', 'artist_name', 'duration_ms']].to_dict(orient='records')
     return {"top_10_longest_tracks": longest_tracks}
 
 # Top 10 songs with the highest acousticness and lowest energy
 @app.get("/top-10-relaxing-tracks")
 def top_10_relaxing_tracks():
     relaxing_tracks = df[(df['acousticness'] > 0.8) & (df['energy'] < 0.4)]
-    top_relaxing = relaxing_tracks.nlargest(10, 'acousticness')[['name', 'artists', 'acousticness', 'energy']].to_dict(orient='records')
+    top_relaxing = relaxing_tracks.nlargest(10, 'acousticness')[['track_name', 'artist_name', 'acousticness', 'energy']].to_dict(orient='records')
     return {"top_10_relaxing_tracks": top_relaxing}
 
 # Top 10 songs with the highest popularity
 @app.get("/top-10-popular-tracks")
 def top_10_popular_tracks():
-    top_tracks = df.nlargest(10, 'popularity')[['name', 'artists', 'popularity']].to_dict(orient='records')
+    top_tracks = df.nlargest(10, 'popularity')[['track_name', 'artist_name', 'popularity']].to_dict(orient='records')
     return {"top_10_popular_tracks": top_tracks}
 
 
