@@ -101,6 +101,31 @@ def popularity_per_language():
     result = grouped.to_dict(orient='records')
     return {"data": result}
 
+#Popularity per language 2
+@app.get("/popularity-per-language-2")
+def popularity_per_language_2():
+    grouped = pd.crosstab(df['popularity'], df['language'])
+    result = grouped.to_dict(orient='records')
+    return {"data": result}
+
+# Most danceable songs
+#@app.get("/ten-most-danceable")
+#def ten_most_danceable():
+#    grouped = df.sort_values(by='danceability',ascending=False)
+#    result = grouped.to_dict(orient='records')
+#    return {"data": result}
+
+#Tracks by authors
+
+#Popularity per language 2
+@app.get("/tracks-per-author")
+def tracks_per_author():
+    grouped = df.groupby(['artist_name', 'year']).size().reset_index(name='track_count')
+    #grouped = pd.crosstab(df['artist_name'], df['year'])
+    grouped = grouped.head(50)
+    result = grouped.to_dict(orient='records')
+    return {"data": result}
+
 # Analyse et visualisation de la danceability en fonction de la valence
 @app.get("/danceability-vs-valence")
 def danceability_vs_valence():
