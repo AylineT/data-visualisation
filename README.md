@@ -53,11 +53,6 @@ The frontend part of this project can be found here:
 
 ---
 
-## 🛡️ License
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 ## 💬 Contact
 Feel free to reach out for questions or suggestions.  
 👤 **Your Name**  
